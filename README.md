@@ -47,13 +47,13 @@ graph TD
     Reasoning_Layer --> Output_Layer
 
     %% Styling for colorful boxes
-    style Input_Layer fill:#eceff1,stroke:#455a64,stroke-width:2px
-    style Processing_Layer fill:#e1f5fe,stroke:#01579b,stroke-width:2px
-    style Reasoning_Layer fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    style Output_Layer fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
+    style Input_Layer fill:#cfd8dc,stroke:#455a64,stroke-width:2px,color:#000
+    style Processing_Layer fill:#b3e5fc,stroke:#01579b,stroke-width:2px,color:#000
+    style Reasoning_Layer fill:#ffe0b2,stroke:#e65100,stroke-width:2px,color:#000
+    style Output_Layer fill:#c8e6c9,stroke:#1b5e20,stroke-width:2px,color:#000
 
     %% Node styling
-    classDef engine fill:#fff,stroke:#333,stroke-dasharray: 5 5;
+    classDef engine fill:#f5f5f5,stroke:#333,stroke-dasharray: 5 5,color:#000;
     class CD,GA,REG engine;
 ```
 
