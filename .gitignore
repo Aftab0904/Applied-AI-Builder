@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+.env
+
+# Local data
+assets/
+extracted_data.json
+DDR_Final_Report_v3.md
+backend.log
+
+# IDEs
+.vscode/
+.idea/
