@@ -1,36 +1,86 @@
 # Detailed Diagnostic Report (DDR) Generator
 
-This system automates the process of converting technical site inspection data and thermal imaging reports into a structured, engineer-level diagnostic report. It solves the problem of manually correlating site observations with scientific thermal data.
+This project is an automated engineering pipeline that converts raw site inspection data and thermal imaging into professional-grade diagnostic reports. It replaces manual data correlation with a precise AI-driven workflow that merges visual evidence with scientific temperature analysis.
 
 ## System Architecture
 
+The following diagram illustrates the multi-stage reasoning engine, detailing the transition from raw unstructured data to a structured engineering deliverable.
+
 ```mermaid
 graph TD
-    User_Input[Upload PDF Reports] -->|extractor.py| PDF_Parser[PyMuPDF & Regex Extraction]
-    PDF_Parser -->|Mapped Data| JSON_Cache[extracted_data.json]
-    JSON_Cache -->|main.py| AI_Engine[OpenRouter / AI Reasoning]
-    AI_Engine -->|Engineer Persona| Prompt_Logic[Prompt Engineering & Data Merging]
-    Prompt_Logic -->|Markdown| Final_Report[DDR_Final_Report_v3.md]
-    Final_Report -->|UI| Streamlit_Dashboard[Frontend Preview]
+    subgraph Ingestion_Layer [Data Acquisition]
+        I[Inspection PDF]
+        T[Thermal PDF]
+        ENV[.env Config]
+    end
+
+    subgraph Processing_Layer [Technical Extraction Engine]
+        direction TB
+        MUP[PyMuPDF: Binary Image/Text Stream]
+        REG[Regex: Pattern Matching for ID Mapping]
+        IMG[Image-Context Correlation Pipeline]
+
+        MUP --> REG
+        REG --> IMG
+    end
+
+    subgraph Reasoning_Layer [Cognitive Synthesis Engine]
+        direction TB
+        OR[OpenRouter Gateway]
+        LLM[High-Reasoning Model: GPT-4o/Claude 3.5]
+        PERSONA[Engineering Persona Simulation]
+        BRIDGE[Thermal-Visual Logic Bridge]
+
+        OR --> LLM
+        LLM --> PERSONA
+        PERSONA --> BRIDGE
+    end
+
+    subgraph Output_Layer [Production Deliverable]
+        DDR[Final Diagnostic Report]
+        MD[Markdown Rendering Engine]
+        AS[Asset Mapping: Evidence Assets]
+    end
+
+    Ingestion_Layer --> Processing_Layer
+    Processing_Layer --> Reasoning_Layer
+    Reasoning_Layer --> Output_Layer
+
+    %% Advanced Styling
+    style Ingestion_Layer fill:#f9f9f9,stroke:#333,stroke-width:2px
+    style Processing_Layer fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    style Reasoning_Layer fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style Output_Layer fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
 ```
 
-## Core AI Logic
+## The Role of OpenRouter
 
-The intelligence of this project isn't just in summarizing text; it's in the logical "join" between two different types of data.
+In this project, OpenRouter serves as the central API gateway to access world-class language and vision models.
+
+### Why use OpenRouter?
+- Model Flexibility: It allows the system to toggle between different high-reasoning models like Claude 3.5 Sonnet and GPT-4o without changing the underlying code.
+- Auto-Routing: We use the auto-routing feature to ensure that for every report, the model with the best performance-to-latency ratio is selected.
+- High Context Limits: It provides access to models capable of processing the entire content of multiple technical reports in a single "look," ensuring no context is lost during analysis.
+
+## Core Logic and Vision Processing
+
+The system does not simply read text; it performs a technical "join" between visual site photos and scientific thermal maps.
 
 ### Technical Extraction (extractor.py)
-A standard AI often fails to read IDs inside technical tables. To fix this, I used PyMuPDF (fitz) combined with Regular Expressions. This script identifies patterns like "RB02380X" (Thermal IDs) and "Photo 1" (Inspection IDs). It physically extracts these images from the PDF and saves them in a local assets folder, creating a map that the AI uses to know which photo supports which observation.
+Standard text extraction often fails to understand the relationship between a photo and its label in a table. This script uses PyMuPDF (fitz) to extract binary image data directly from the PDF. It then uses regular expressions to find specific IDs like "RB02380X" and "Photo 1." This creates a structured map where every observation is physically linked to its evidence.
 
-### Expert Reasoning (main.py)
-Once the data is extracted, it is passed to the AI. The logic here uses a Full Document Context approach. Instead of breaking the report into chunks (which can lose context), the system sends the entire extracted dataset to the model. This allows the AI to see the "big picture"—for example, it can see that a leak mentioned on page 2 of the inspection report is confirmed by a temperature drop on page 15 of the thermal report.
+### Vision-Language Integration (main.py)
+Once the data is mapped, it is sent to the reasoning engine. 
+- How Vision Models Work: The models used (accessed via OpenRouter) are multimodal. They analyze pixels to detect patterns—such as the gradient of a thermal map—and combine that with the surrounding text to understand the context of a structural issue.
+- The Logic Bridge: I have programmed a specific logic bridge into the system prompt. The AI looks for a 5°C temperature differential in the thermal data to confirm visual reports of moisture. If the site report says "damp" but the thermal data doesn't show a cold spot, the AI is trained to flag this as a potential inconsistency.
 
-## Prompt Engineering and Strategy
+## Engineering Strategy and Prompt Design
 
-The system prompt is the most critical part of the AI workflow. It is designed to meet several engineering standards:
+The intelligence of the workflow is driven by a carefully designed system prompt that enforces professional standards:
 
-1. Persona Adoption: The AI is instructed to act as a "Structural and Civil Engineer specializing in building forensic diagnostics." This ensures the tone is cautious and professional, using terms like "moisture intrusion" instead of just "leak."
-2. The "Bridge Sentence" Logic: I programmed the AI to use specific reasoning to link data. It looks for a 5°C temperature differential in the thermal data to "bridge" the gap between a visual observation and a scientific conclusion.
-3. Constraint Satisfaction: The prompt includes strict rules: "Do not invent facts" and "Mention conflicts." This ensures that if the thermal data doesn't match the site findings, the report flags it rather than making up a solution.
+1. Expert Persona: The AI is forced to act as a "Structural and Civil Engineer." This shifts its language from general descriptions to technical forensic terminology (e.g., using "capillary action" or "moisture intrusion").
+2. Conflict Resolution: The system is designed to check for data consistency. If the thermal report and the inspection report provide conflicting info, the system explicitly documents the conflict instead of guessing.
+3. Structured Output: The AI produces a clean Markdown report with a specific 7-part structure, including probable root causes and severity assessments based on engineering reasoning.
 
 ## Visual Demo & Workflow
 
@@ -52,26 +102,26 @@ Thermal findings are paired with physical photos to provide a complete picture o
 ![Correlation](Demo_ScreenShots/Screenshot%20(235).png)
 
 ### 5. Final Structured Report
-The output is a client-ready DDR containing all 7 required sections, including Property Issue Summary and Recommended Actions.
+The output is a client-ready DDR containing all required sections, including Property Issue Summary and Recommended Actions.
 ![Final Report 1](Demo_ScreenShots/Screenshot%20(237).png)
 ![Final Report 2](Demo_ScreenShots/Screenshot%20(238).png)
 
-## Meeting Recruiter Expectations
+## Local Setup
 
-This project was built to demonstrate "System Thinking" rather than just UI design. Here is how it hits the assignment's evaluation criteria:
+1. **Environment Setup:**
+   ```bash
+   python -m venv venv
+   .\venv\Scripts\activate
+   ```
 
-- Accuracy: By using a dedicated extraction script before the AI step, we ensure that image IDs and temperature readings are 100% accurate.
-- Handling Imperfect Data: If a flat number is missing or an image isn't found, the logic is trained to infer the missing data from surrounding context (like inferring a flat number from header data) or explicitly stating "Not Available."
-- Logical Merging: The system identifies overlapping locations between the two reports to create a single "Area-wise Observation" entry, which is a key requirement of the assignment.
-- Reliability: The use of OpenRouter's auto-routing ensures that a high-reasoning model (like Claude 3.5 or GPT-4o) is always used for the complex engineering assessment.
+2. **Installation:**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-## Setup and Installation
+3. **Configuration:**
+   Add your `OPENROUTER_API_KEY` to the `.env` file.
 
-### Backend (FastAPI)
-python -m venv venv
-source venv/bin/activate  # Or venv\Scripts\activate on Windows
-pip install -r requirements.txt
-python app.py
-
-### Frontend (Streamlit)
-streamlit run streamlit_app.py
+4. **Execution:**
+   - Start the backend: `python app.py`
+   - Start the frontend: `streamlit run streamlit_app.py`
