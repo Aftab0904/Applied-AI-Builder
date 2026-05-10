@@ -1,86 +1,79 @@
-# Applied AI Builder: Automated Detailed Diagnostic Report (DDR) Workflow
+# Detailed Diagnostic Report (DDR) Generator
 
-This technical implementation provides an automated solution for converting raw, multi-source structural inspection data into professional, client-ready forensic reports. The system is designed to handle the logical merging of physical site observations with thermal diagnostic findings, ensuring high accuracy and structural integrity.
+This implementation provides an automated solution for converting raw, multi-source structural inspection data into professional, client-ready diagnostic reports. The system is designed to handle the logical merging of physical site observations with technical thermal findings, ensuring high accuracy and structural integrity.
 
-## Advanced System Architecture
+## System Architecture
 
-The following diagram details the multi-layered reasoning engine, from raw data extraction to the final synthesis and conflict resolution layers.
+The following diagram illustrates the multi-layered reasoning engine, from technical data acquisition to the final synthesis and correlation layers.
 
 ```mermaid
 graph TD
-    subgraph Input_Layer [Data Acquisition Layer]
+    subgraph Ingestion [Data Acquisition]
         I[Inspection PDF]
         T[Thermal PDF]
         ENV[.env Configuration]
     end
 
-    subgraph Processing_Layer [Extraction & Analysis Engine]
+    subgraph Parsing [Technical Extraction Engine]
         direction TB
-        MUP[PyMuPDF: Image/Text Stream]
-        REG[Regex: ID & Pattern Matching]
-        IMG[Image-Context Correlation]
+        MUP[PyMuPDF: Binary Image/Text Stream]
+        REG[Regex: Pattern Matching for ID Mapping]
+        IMG[Image-Context Correlation Pipeline]
         
         MUP --> REG
         REG --> IMG
     end
 
-    subgraph Reasoning_Layer [Synthesis & Logic Engine]
+    subgraph Reasoning [Cognitive Synthesis Engine]
         direction TB
-        ML[Logical Merging Logic]
-        CD[Conflict Detection Node]
-        GA[Gap Analysis: Not Available Logic]
-        VP[Validation & Prompt Engineering]
+        OR[OpenRouter Gateway]
+        LLM[Multimodal Reasoning: GPT-4o / Claude]
+        PER[Engineering Persona Simulation]
+        JOIN[Thermal-Visual Logic Join]
         
-        ML --> CD
-        CD --> GA
-        GA --> VP
+        OR --> LLM
+        LLM --> PER
+        PER --> JOIN
     end
 
-    subgraph Output_Layer [Assignment-Compliant Deliverable]
-        DDR[Final DDR Document]
+    subgraph Deliverable [Production Output]
+        DDR[Final Diagnostic Report]
         MD[Markdown Rendering]
-        AS[Asset Mapping: assets/]
+        AS[Evidence Assets: assets/]
     end
 
-    Input_Layer --> Processing_Layer
-    Processing_Layer --> Reasoning_Layer
-    Reasoning_Layer --> Output_Layer
+    Ingestion --> Parsing
+    Parsing --> Reasoning
+    Reasoning --> Deliverable
 
-    %% Styling for colorful boxes
-    style Input_Layer fill:#cfd8dc,stroke:#455a64,stroke-width:2px,color:#000
-    style Processing_Layer fill:#b3e5fc,stroke:#01579b,stroke-width:2px,color:#000
-    style Reasoning_Layer fill:#ffe0b2,stroke:#e65100,stroke-width:2px,color:#000
-    style Output_Layer fill:#c8e6c9,stroke:#1b5e20,stroke-width:2px,color:#000
-
-    %% Node styling
-    classDef engine fill:#f5f5f5,stroke:#333,stroke-dasharray: 5 5,color:#000;
-    class CD,GA,REG engine;
+    %% Advanced Styling
+    style Ingestion fill:#f5f5f5,stroke:#333,stroke-width:2px
+    style Parsing fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
+    style Reasoning fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style Deliverable fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
 ```
 
-## Technical Stack
+## The Role of OpenRouter
 
-| Category | Technology |
-| :--- | :--- |
-| Frontend Framework | Streamlit (Interactive UI) |
-| Backend Framework | FastAPI (REST API Engine) |
-| Data Extraction | PyMuPDF (fitz) |
-| AI Reasoning | OpenRouter API / LLM |
-| Language | Python 3.8+ |
-| Image Processing | Regex-based Asset Mapping |
+OpenRouter serves as the central API gateway for the project, providing a unified interface to access world-class language and vision models. 
 
-## Core Engineering Principles (Assignment Compliance)
+### Why OpenRouter is used:
+- Model Versatility: It allows the system to switch between different high-reasoning models like Claude 3.5 Sonnet and GPT-4o without changing the backend logic.
+- Performance Optimization: It automatically routes requests to ensure that the most efficient and accurate model is used for complex engineering assessments.
+- Unified Integration: By using one API, the system can leverage multiple model providers, ensuring high availability and reliability for processing technical documents.
 
-### 1. Intelligent Data Merging
-The system identifies corresponding areas across different documents by correlating "Photo IDs" with "Thermal IDs." This ensures that a moisture reading from a thermal camera is accurately placed alongside the physical observation of the same structural element.
+## Handling Image and Visual Data
 
-### 2. Handling Missing and Conflicting Data
-In adherence to professional engineering standards, the system follows strict rules:
-- **Conflict Management:** If temperature readings contradict physical observations (e.g., "Dry" text vs "Wet" thermal), the report explicitly highlights the discrepancy.
-- **Data Gap Identification:** If an area lacks an image or data, the system explicitly labels the section as "Not Available" or "Image Not Available" rather than inventing facts.
-- **Anti-Hallucination:** The AI engine is constrained by a system prompt that forbids the creation of information not present in the source files.
+A core feature of this system is its ability to handle technical visual evidence alongside text.
 
-### 3. Image Contextualization
-Images are extracted and contextualized. Each image is placed directly under the observation it supports. The system filters out unrelated assets (logos/icons) to ensure only relevant diagnostic evidence is included.
+### Technical Extraction Logic
+Standard text extractors often miss the relationship between a photo and its label. This project uses a custom pipeline built with PyMuPDF to extract binary image data directly from the source PDFs. We use regular expressions to identify specific IDs like "Photo 1" or "RB02380X" within the report text. This creates a mapping table that ensures every site observation is physically linked to the correct evidence file.
+
+### Multimodal Vision Analysis
+The system leverages multimodal AI models that process both text and pixels. When an image is sent to the reasoning engine, the model analyzes the visual patterns—such as the color gradients in a thermal map—to confirm structural issues like moisture intrusion or heat loss.
+
+### Logic Bridge
+The system prompt includes a "logic bridge" that forces the AI to look for a 5°C temperature differential in the thermal data before confirming a visual report of moisture. This ensures that the final report is backed by scientific data rather than just visual guesswork.
 
 ## Visual Demo & Workflow
 
